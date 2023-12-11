@@ -1,22 +1,43 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
+
+const expectedDeckLength int = 52
 
 func TestNewDeck(t *testing.T) {
-	expectedDeckLength := 52
 	expectedFirstCard := "Ace of Spades"
 	expectedLastCard := "Jack of Clubs"
-	d := newDeck()
+	deck := newDeck()
 
-	if len(d) != expectedDeckLength {
-		t.Errorf("Expected deck length of %v, but got %v.", expectedDeckLength, len(d))
+	if len(deck) != expectedDeckLength {
+		t.Errorf("Expected deck length of %v, but got %v.", expectedDeckLength, len(deck))
 	}
 
-	if d[0] != expectedFirstCard {
-		t.Errorf("Expected first card of '%v', but got '%v'.", expectedFirstCard, d[0])
+	if deck[0] != expectedFirstCard {
+		t.Errorf("Expected first card of '%v', but got '%v'.", expectedFirstCard, deck[0])
 	}
 
-	if d[len(d)-1] != expectedLastCard {
-		t.Errorf("Expected last card of '%v', but got '%v'.", expectedLastCard, d[len(d)-1])
+	if deck[len(deck)-1] != expectedLastCard {
+		t.Errorf("Expected last card of '%v', but got '%v'.", expectedLastCard, deck[len(deck)-1])
 	}
+}
+
+func TestSaveDeckToFileAndNewDeckFromFile(t *testing.T) {
+	testFileName := "_decktesting"
+
+	os.Remove(testFileName)
+
+	deck := newDeck()
+	deck.saveToFile(testFileName)
+
+	loadedDeck := newDeckFromeFile(testFileName)
+
+	if len(loadedDeck) != expectedDeckLength {
+		t.Errorf("Expected deck length of %v, but got %v.", expectedDeckLength, len(loadedDeck))
+	}
+
+	os.Remove(testFileName)
 }
