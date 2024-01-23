@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+type card struct {
+	suit  string
+	value string
+}
+
 type deck []string
 
 func newDeck() deck {
